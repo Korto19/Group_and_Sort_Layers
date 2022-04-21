@@ -2,9 +2,8 @@
 # Group_and_Sort_Layers
 Plugin che raggruppa i layer per tipo e li ordina alfanumericamente
 
-![photo_2022-04-21_16-06-37](https://user-images.githubusercontent.com/36882050/164476047-edb5a031-41bf-4c22-99fe-cc4960752c05.jpg)
+![Immagine 2022-04-21 161115](https://user-images.githubusercontent.com/36882050/164477072-86fc1e05-c69b-4bb3-aeb9-1fc5bc8a546f.png)
 
 crea un gruppo per ogni tipo di layer e rimuove eventualmente i gruppi vuoti con un breve report di dettaglio
 
-
-![Immagine 2022-04-21 160906](https://user-images.githubusercontent.com/36882050/164476639-7fc1178e-9246-4c05-ad90-5a789a8ceed3.png)
+![Immagine 2022-04-21 161137](https://user-images.githubusercontent.com/36882050/164477085-3234546e-6bbb-4118-8704-bdcc8f79160f.png)
