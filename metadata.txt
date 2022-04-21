@@ -31,7 +31,7 @@ tags=python, layer, sort, group
 
 homepage=http://github.com/Korto19/Group_and_Sort_Layers#group
 category=Plugins
-icon=ordina.svg
+icon=icon.png
 # experimental flag
 experimental=False
 
