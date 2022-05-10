@@ -3,17 +3,18 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Raggruppa e ordina layer
-name[en]=Layer Group and Sort
+name=Layer Group and Sort
+name[it]=Raggruppa e ordina layer
 qgisMinimumVersion=3.0
-description=Raggruppa i layer per tipo e li ordina alfanumericamente
-description[en]=Group layer by type and sort them alphanumerically into own group
+description=Group the layers by type and sort them alphanumerically into their own group
+description[it]=Raggruppa i layer per tipo e li ordina alfanumericamente
 version=1.0
 author=Giulio Fattori
 email=giulio.fattori@tin.it
 
-about=Questo plugin raggruppa i layer del progetto secondo il tipo ed li riordina alfanumericamente all'interno del gruppo
-about[en]=This plugin groups the layers of the project according to the type and reorders them alphanumeric within the group
+about=This plugin groups the layers of the project according to their type and reorders them alphanumeric within their own group
+about[it]=Questo plugin raggruppa i layer del progetto secondo il tipo ed li riordina alfanumericamente all'interno del gruppo
+
 
 tracker=http://github.com/Korto19/Group_and_Sort_Layers/issues
 repository=http://github.com/Korto19/Group_and_Sort_Layers
