@@ -33,8 +33,9 @@ import os.path
 
 import datetime
 from qgis.utils import iface
-from qgis.core import QgsApplication, QgsProject, QgsMapLayerType, QgsLayerTreeGroup, QgsMessageLog
+from qgis.core import QgsApplication, QgsProject, QgsMapLayerType, QgsLayerTreeGroup, QgsMessageLog, QgsExpressionContextUtils
 from qgis.gui import QgsMessageBar
+from collections import OrderedDict
 
 
 
@@ -95,10 +96,12 @@ class GroupAndSortLayer:
         text,
         callback,
         enabled_flag=True,
+        checkable=False,
         add_to_menu=True,
         add_to_toolbar=True,
         status_tip=None,
         whats_this=None,
+        menu=None,
         parent=None):
         """Add a toolbar icon to the toolbar.
 
@@ -143,6 +146,7 @@ class GroupAndSortLayer:
         action = QAction(icon, text, parent)
         action.triggered.connect(callback)
         action.setEnabled(enabled_flag)
+        #action.setCheckable(checkable)
 
         if status_tip is not None:
             action.setStatusTip(status_tip)
@@ -169,10 +173,18 @@ class GroupAndSortLayer:
         icon_path = ':/plugins/GroupAndSortLayer/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'Group And Sort Toc Layers'),
+            text=self.tr(u'Layers && Group Sort'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
+        icon_path = ':/plugins/GroupAndSortLayer/group.png'
+        self.add_action(
+            icon_path,
+            text=self.tr(u'Group Sort Asc && Desc'),
+            #checkable=True,
+            callback=self.group_sort,
+            parent=self.iface.mainWindow()
+        )
         # will be set False in run()
         self.first_start = True
 
@@ -300,4 +312,41 @@ class GroupAndSortLayer:
         else:
         
             #Nessun layer o gruppo
-            iface.messageBar().pushMessage("WARNING", "Empty project",1,3)
+            iface.messageBar().pushMessage("WARNING", "Empty project",2,3)
+            
+    def group_sort(self):
+    
+        project = QgsProject.instance()
+        try:
+            if QgsExpressionContextUtils.projectScope(project).variable('rev') == False:
+                QgsExpressionContextUtils.setProjectVariable(project,'rev', True)
+                sort_order = 'descending'
+            else:
+                QgsExpressionContextUtils.setProjectVariable(project,'rev', False)
+                sort_order = 'ascending'
+
+        except:
+            QgsExpressionContextUtils.setProjectVariable(project,'rev', False)
+
+        
+        try:
+            root = QgsProject.instance().layerTreeRoot()
+            group_sel = iface.layerTreeView().selectedNodes()
+            group = root.findGroup(group_sel[0].name())
+
+            rev = QgsExpressionContextUtils.projectScope(project).variable('rev')
+
+            LyrInGroup = lambda listCh:{listCh[lyr[0]].name()+str(lyr[0]):lyr[1] for lyr in enumerate(listCh)}
+                
+            lyr_names = LyrInGroup(group.children())
+            lyr_keys = OrderedDict(sorted(LyrInGroup(group.children()).items(), reverse = rev)).keys()
+
+            lyr_sorted = [lyr_names[k].clone() for k in lyr_keys]
+            group.insertChildNodes(0,lyr_sorted)
+            for n in lyr_names.values():
+                group.removeChildNode(n)
+            
+            iface.messageBar().pushMessage("WARNING", "Group Ordered " + sort_order.upper() + " - If you save it becomes permanent",1)
+            
+        except:
+            iface.messageBar().pushMessage("ERROR", "Empty project or Not a Group",2,3)
