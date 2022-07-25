@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/plugins/GroupAndSortLayer" >
-        <file>icon.png</file>
-        <file>group.png</file>
-    </qresource>
-</RCC>
