@@ -251,6 +251,8 @@ class GroupAndSortLayer:
             wkbtype_poly  = (3,1003,2003,3003,-2147483645,6,1006,2006,3006)
             wkbtype_table = (0,100)
 
+            layerVisibility = {}
+
             #trovo layer e li sposto nel gruppo di destinazione
             for layer in layers.values():
                 myblayer = root.findLayer(layer.id())
@@ -272,6 +274,8 @@ class GroupAndSortLayer:
                 if layer.type() is QgsMapLayerType.RasterLayer:
                         root.findGroup("Group Raster").insertChildNode(5, myClone)
                         count_raster += 1
+
+                layerVisibility[myClone.layerId()] = myblayer.isVisible()
                         
                 parent.removeChildNode(myblayer)
         
@@ -282,6 +286,7 @@ class GroupAndSortLayer:
                     lyrSortList = sorted(lyrList, key=lambda x: x.name(),reverse=False)
                     for idx, lyr in enumerate(lyrSortList):
                         treeLyr = child.insertLayer(idx, lyr)
+                        treeLyr.setItemVisibilityChecked(layerVisibility[lyr.id()])
                     child.removeChildren(len(lyrList),len(lyrList))
 
             #ripulisco se son vuoti e contraggo gruppi
@@ -324,17 +329,24 @@ class GroupAndSortLayer:
             else:
                 QgsExpressionContextUtils.setProjectVariable(project,'rev', False)
                 sort_order = 'ascending'
+            # iface.messageBar().pushMessage("Sort Order", sort_order.upper())
 
         except:
             QgsExpressionContextUtils.setProjectVariable(project,'rev', False)
+            sort_order = 'ascending'
+            # iface.messageBar().pushMessage("Sort Order", sort_order.upper())
 
         
         try:
-            root = QgsProject.instance().layerTreeRoot()
+            root = project.layerTreeRoot()
             group_sel = iface.layerTreeView().selectedNodes()
             group = root.findGroup(group_sel[0].name())
 
-            rev = QgsExpressionContextUtils.projectScope(project).variable('rev')
+            if group is None:
+                iface.messageBar().pushMessage("ERROR", "No Group Selected. Please select a Group",2,3)
+            
+            rev = 1
+            if (sort_order.upper() == 'ascending'.upper()): rev = 0
 
             LyrInGroup = lambda listCh:{listCh[lyr[0]].name()+str(lyr[0]):lyr[1] for lyr in enumerate(listCh)}
                 
@@ -346,7 +358,7 @@ class GroupAndSortLayer:
             for n in lyr_names.values():
                 group.removeChildNode(n)
             
-            iface.messageBar().pushMessage("WARNING", "Group Ordered " + sort_order.upper() + " - If you save it becomes permanent",1)
+            iface.messageBar().pushMessage("MESSAGE", f"Group ({group.name()}) Ordered " + sort_order.upper() + " - If you save it becomes permanent",0)
             
         except:
             iface.messageBar().pushMessage("ERROR", "Empty project or Not a Group",2,3)
