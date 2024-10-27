@@ -8,7 +8,7 @@ name[it]=Raggruppa e ordina layer
 qgisMinimumVersion=3.0
 description=Group the layers by type and sort them alphanumerically into their own group
 description[it]=Raggruppa i layer per tipo e li ordina alfanumericamente
-version=1.2
+version=1.3
 author=Giulio Fattori
 email=giulio.fattori@tin.it
 
@@ -27,6 +27,7 @@ hasProcessingProvider=no
 changelog=version 0.1 02.04.2019
           version 0.9 30.01.2020 added table layer
 	  version 1.2 25.07.2021 add sort group only button
+	  version 1.3 25.10.2024 bugfix group sort
 
 # Tags are comma separated with spaces allowed
 tags=python, layer, sort, group
