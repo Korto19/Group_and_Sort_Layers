@@ -310,6 +310,7 @@ class GroupAndSortLayer:
             iface.messageBar().pushMessage("WARNING", "If you save it becomes permanent",1)
             #Variabile progetto per successivi ordinamenti di gruppo
             QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(),'rev', False)
+            
         else:
         
             #Nessun layer o gruppo
@@ -318,7 +319,7 @@ class GroupAndSortLayer:
     def group_sort(self):
     
         project = QgsProject.instance()
-        
+        # try:
         if QgsExpressionContextUtils.projectScope(project).variable('rev') == False:
             QgsExpressionContextUtils.setProjectVariable(project,'rev', True)
             sort_order = 'descending'
@@ -326,6 +327,10 @@ class GroupAndSortLayer:
             QgsExpressionContextUtils.setProjectVariable(project,'rev', False)
             sort_order = 'ascending'
 
+        # except:
+            # QgsExpressionContextUtils.setProjectVariable(project,'rev', False)
+
+        
         try:
             root = QgsProject.instance().layerTreeRoot()
             group_sel = iface.layerTreeView().selectedNodes()
@@ -343,7 +348,7 @@ class GroupAndSortLayer:
             for n in lyr_names.values():
                 group.removeChildNode(n)
             
-            iface.messageBar().pushMessage("WARNING", "Group Ordered " + sort_order.upper() + " - If you save it becomes permanent",1)
+            iface.messageBar().pushMessage("WARNING", "Group Ordered " + sort_order.upper() + " - If you save it becomes permanent",1,3)
             
         except:
             iface.messageBar().pushMessage("ERROR", "Empty project or Not a Group",2,3)
