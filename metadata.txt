@@ -27,7 +27,7 @@ hasProcessingProvider=no
 changelog=version 0.1 02.04.2019
           version 0.9 30.01.2020 added table layer
 	  version 1.2 25.07.2021 add sort group only button
-	  version 1.3 25.10.2024 bugfix group sort
+	  version 1.3 25.10.2024 bugfix in sort group
 
 # Tags are comma separated with spaces allowed
 tags=python, layer, sort, group
